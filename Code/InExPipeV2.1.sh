@@ -45,7 +45,7 @@ if [ "$pairend" = false ] ; then
     echo '#!/bin/bash' >> STARParaScript$tempi.sh
     echo module load STAR >> STARParaScript$tempi.sh
     echo mkdir $res_fold$prefix >> STARParaScript$tempi.sh
-    echo STAR --genomeDir /external/rprshnas01/kcni/ychen/References/Ensembl/StarRefMouse/ --runThreadN 12 --readFilesIn $file --outFileNamePrefix "$res_fold$prefix/$prefix" --outSAMtype BAM SortedByCoordinate --outReadsUnmapped Fastx --runRNGseed 777 --limitBAMsortRAM 10000000000 --quantMode GeneCounts >> STARParaScript$tempi.sh
+    echo STAR --genomeDir /external/rprshnas01/kcni/ychen/References/Ensembl/StarRefMouse/ --runThreadN 12 --readFilesIn $file --outFileNamePrefix "$res_fold$prefix/$prefix" --outSAMtype BAM SortedByCoordinate --outReadsUnmapped Fastx --runRNGseed 777 --limitBAMsortRAM 10000000000 --quantMode GeneCounts --outFilterMultimapNmax 1 >> STARParaScript$tempi.sh
     echo STAR --inputBAMfile "$res_fold$prefix/$prefix"Aligned.sortedByCoord.out.bam --runThreadN 12 --limitBAMsortRAM 10000000000 --bamRemoveDuplicatesType UniqueIdentical --runMode inputAlignmentsFromBAM --outFileNamePrefix "$res_fold$prefix/$prefix"_PCRL >> STARParaScript$tempi.sh
     echo mv "$res_fold$prefix/$prefix"Aligned.sortedByCoord.out.bam "${res_fold}coord_bams/" >> STARParaScript$tempi.sh
     echo mv "$res_fold$prefix/$prefix"_PCRLProcessed.out.bam "${res_fold}pcrless_bams/" >> STARParaScript$tempi.sh
@@ -107,7 +107,7 @@ elif [ "$pairend" = true ] ; then
     echo '#!/bin/bash' >> STARParaScript$tempi.sh
     echo module load STAR >> STARParaScript$tempi.sh
     echo mkdir $res_fold$prefix >> STARParaScript$tempi.sh
-    echo STAR --genomeDir /external/rprshnas01/kcni/ychen/References/Ensembl/StarRefMouse/ --runThreadN 12 --readFilesIn $file $file2 --outFileNamePrefix "$res_fold$prefix/$prefix" --outSAMtype BAM SortedByCoordinate --outReadsUnmapped Fastx --runRNGseed 777 --limitBAMsortRAM 10000000000 --quantMode GeneCounts >> STARParaScript$tempi.sh
+    echo STAR --genomeDir /external/rprshnas01/kcni/ychen/References/Ensembl/StarRefMouse/ --runThreadN 12 --readFilesIn $file $file2 --outFileNamePrefix "$res_fold$prefix/$prefix" --outSAMtype BAM SortedByCoordinate --outReadsUnmapped Fastx --runRNGseed 777 --limitBAMsortRAM 10000000000 --quantMode GeneCounts --outFilterMultimapNmax 1 >> STARParaScript$tempi.sh
     echo STAR --inputBAMfile "$res_fold$prefix/$prefix"Aligned.sortedByCoord.out.bam --runThreadN 12 --limitBAMsortRAM 10000000000 --bamRemoveDuplicatesType UniqueIdentical --runMode inputAlignmentsFromBAM --outFileNamePrefix "$res_fold$prefix/$prefix"_PCRL >> STARParaScript$tempi.sh
     echo mv "$res_fold$prefix/$prefix"Aligned.sortedByCoord.out.bam "${res_fold}coord_bams/" >> STARParaScript$tempi.sh
     echo mv "$res_fold$prefix/$prefix"_PCRLProcessed.out.bam "${res_fold}pcrless_bams/" >> STARParaScript$tempi.sh
