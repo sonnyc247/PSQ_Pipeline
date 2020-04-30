@@ -1,0 +1,246 @@
+---
+title: "Bioinformatics Sequence Alignment and Quantification Pipeline"
+author: "Justin Chee, Tripathy Lab"
+output: 
+  html_document:
+    toc: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(knitr)
+library(kableExtra)
+library(ggplot2)
+library(data.table)
+```
+
+# Introduction
+
+The process of getting from individually sequenced reads to interpretable data can be quite complex and there are many programs and techniques that perform individual steps in this process. However, there is a need for a pipeline that weaves these steps together so that raw data files can be analyzed and assembled into results in a streamlined and efficient manner.
+
+Here we walk through the workflow of the of our bioinformatics pipeline. We start with raw fastq files, align them to reference genomes, process and quantify these reads, and finally produce count tables from this dataset.  Examples of basic analysis and visualization of the data will also be given.
+
+-------------------------------------------------------------------------------------------------------------------------------
+
+# Alignment and Mapping
+
+Here we use the STAR aligner^[1]^ program to perform the basic alignment and mapping of the raw reads (fastq files) to a reference genome. This will produce `.bam` format files sorted by coordinate. The following will be performed on the command line.
+
+```{bash eval=FALSE}
+STAR --genomeDir /StarRefMouse/ --runThreadN 12 --readFilesIn 100_sequence.txt --outFileNamePrefix /100_sequence --outSAMtype BAM SortedByCoordinate --outReadsUnmapped Fastx --runRNGseed 777 --limitBAMsortRAM 10000000000 --quantMode GeneCounts --outFilterMultimapNmax 1
+```
+
+* `--genomeDir /StarRefMouse/` the path to the directory containing the reference genome indices, this must be the reference genome for the organism from the which the sequencing dataset was taken. A reference mouse genome is used for this example
+* `--readFilesIn 100_sequence.txt` the file raw fastq file from the seqeuncer to be aligned 
+* `--outFileNamePrefix /100_sequence` the prefix of the `.bam` file to be produced. Full path can be specified if output files are to be put into an existing directory
+
+We can also use STAR aligner to perform additional processing of data such as removing duplicate reads produced by PCR.
+
+```{bash eval=FALSE}
+STAR --inputBAMfile 100_sequenceAligned.sortedByCoord.out.bam --runThreadN 12 --limitBAMsortRAM 10000000000 --bamRemoveDuplicatesType UniqueIdentical --runMode inputAlignmentsFromBAM --outFileNamePrefix /100_sequence_PCRL
+```
+
+* `--inputBAMfile 100_sequenceAligned.sortedByCoord.out.bam` the `.bam` file from which PCR duplicates are to be removed
+* `--outFileNamePrefix /100_sequence_PCRL` the prefix of the `.bam` file without PCR duplicates to be produced. Full path can be specified if output files are to be put into an existing directory
+
+These commands can also be performed can be performed on multiple files manually or using a shell script to utilize a resource manager such as slurm.  An example of a script designed for slurm can be found [here.](https://github.com/sonnyc247/PSQ_Pipeline/blob/master/Code/InExPipeV2.1.sh)
+
+Output directories may be manipulated up to the users discretion as long as all `.bam` files to be quantified remain in a single directory.
+
+
+# Quantification and Basic Processing
+
+### Reference Building
+Once all bam files have been generated, quantification and further data processing can be performed. First we must build a reference object for the organism of interest to annotate the genomic location of the aligned reads. Building of this reference object is performed using [AIBS_reference_building.R](https://github.com/sonnyc247/PSQ_Pipeline/blob/master/Code/AIBS_reference_building.R) adapted from the Allen Institute for Brain Science.
+
+`reference <- import.gff("/Mus_musculus.GRCm38.98.gtf")` can be modified to import the reference genome (gtf file) of the organism from which the dataset was taken, this example uses a reference mouse genome. Once completed, the script will output a `reference.count.Rdata` reference object to the current working directory.
+
+### Quantification and Location Annotation
+With the reference object created, quantification of the aligned bam files can be performed using [adapted_AIBS_sample_bam_to_count_csv.R](https://github.com/sonnyc247/PSQ_Pipeline/blob/master/Code/adapted_AIBS_sample_bam_to_count_csv.R).
+
+```{bash eval=FALSE}
+Rscript adapted_AIBS_sample_bam_to_count_csv.R /dirofbams
+```
+
+* `/dirofbams` is the directory containing the aligned bam files to be quantified
+
+This script produces a count table for each bam file quantified, the genomic location (intronic vs exonic) of each read, as well as fpkm are included to be used as basic quality metrics. Individual count tables will be outputted as `.csv` files into a subdirectory called `/InExCounts`.
+
+### Compilation of Count Tables
+
+After all individual count tables have been produced, they are compiled together and separated based on the genomic locations (intronic vs exonic) of the reads using [combine_csv.R](https://github.com/sonnyc247/PSQ_Pipeline/blob/master/Code/combine_csv.R).
+
+```{bash eval=FALSE}
+Rscript combine_csv.R /InExCounts
+```
+
+* `/InExCounts` is the directory containing the individual count tables
+
+This script outputs 2 combined count tables, one for intronic reads: `combined_introns.csv` and one for exonic reads: `combined_exons.csv`.
+
+Example of produced count table:
+
+```{r}
+kable(read.csv("PCRless/combined_exons.csv")[1:10, 2:6]) %>% 
+  kable_styling(full_width = F, font_size = 10)
+```
+
+
+# Analysis and Visualization (Optional)
+
+Once the count tables for both intronic and exonic reads have been created, they can be visualized to analyzed basic quality metrics such as the ratio of intronic reads vs exonic reads in individual samples. In this example we use RNA-seq data provided by Kristina Zuza of thermosensitive hypothalamic neurons. The following will be performed in R.
+
+```{r}
+# loading in count tables
+combined_exons = read.csv('PCRless/combined_exons.csv')
+combined_introns = read.csv('PCRless/combined_introns.csv')
+
+# df containing sum of all exonic reads and sum of all intronic reads for each sample
+exon_sum <- colSums(combined_exons[, 3:38])
+intron_sum <- colSums(combined_introns[, 3:38])
+
+exon_reads <- data.frame("read_counts" = exon_sum,
+                         "location" = rep("exonic", length(exon_sum)))
+exon_reads["sample"] <- gsub("[^0-9]", "", rownames(exon_reads))
+
+intron_reads <- data.frame("read_counts" = intron_sum,
+                         "location" = rep("intronic", length(intron_sum)))
+intron_reads["sample"] <- gsub("[^0-9]", "", rownames(intron_reads))
+
+combined_reads <- rbind(exon_reads, intron_reads)
+
+# plotting raw number of exonic reads vs intronic reads for each sample
+ggplot(combined_reads, aes(fill=location, y=read_counts, x=sample)) +
+  geom_bar(position="stack", stat="identity") + 
+  xlab("Sample") + ylab("Read Counts") + ggtitle("Read Counts by Location") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) + 
+  guides(fill=guide_legend(title="Read location"))
+```
+
+
+We can visualize the amount of raw reads that were successfully aligned to give us a basic metric of the quality of the RNA-seq performed on each sample
+
+
+```{r}
+read_per_sample <- exon_sum + intron_sum
+
+# mean value of reads per sample
+mean(read_per_sample)
+
+# variance of reads per sample
+var(read_per_sample)
+
+# standard deviation
+sd(read_per_sample)
+```
+
+```{r}
+# plotting proportion of exonic reads vs intronic reads for each sample
+ggplot(combined_reads, aes(fill=location, y=read_counts, x=sample)) +
+  geom_bar(position="fill", stat="identity") + 
+  xlab("Sample") + ylab("Read Counts") + ggtitle("Read Proportion by Location") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) + 
+  guides(fill=guide_legend(title="Read location"))
+```
+
+
+We can also visualize the proportion of intronic vs exonic reads perhaps giving insight into the location from whcih the RNA was retrieved
+
+
+```{r}
+read_pro_per_sample <- intron_sum / (exon_sum + intron_sum)
+
+# mean proportion of reads that are intronic 
+mean(read_pro_per_sample)
+
+# variance of proportion
+var(read_pro_per_sample)
+
+# standard deviation of proportion
+sd(read_pro_per_sample)
+```
+<div style="margin-bottom:100px;">
+These tasks can also be completed for gene counts:
+
+```{r}
+# counting number of genes detected (counts > 0)
+gene_count_exon = colSums(combined_exons[,3:38] > 0, na.rm = T)
+gene_count_intron = colSums(combined_introns[,3:38] > 0, na.rm = T)
+
+# separating gene counts based on location
+gene_count_exon_only <- colSums((combined_exons[,3:38] > 0 & 
+                                           combined_introns[,3:38] == 0),
+                                        na.rm = T)
+gene_count_intron_only <- colSums((combined_exons[,3:38] == 0 & 
+                                           combined_introns[,3:38] > 0),
+                                        na.rm = T)
+gene_count_exons_introns_only <- colSums((combined_exons[,3:38] > 0 & 
+                                           combined_introns[,3:38] > 0),
+                                        na.rm = T)
+
+# reformatting df to contain location and sample group info
+exon_only_df <- data.frame("gene_counts" = gene_count_exon_only, 
+                           "location" = rep("exons only", length(gene_count_exon_only)))
+setDT(exon_only_df, keep.rownames = "sample")
+intron_only_df <- data.frame("gene_counts" = gene_count_intron_only, 
+                           "location" = rep("introns only", length(gene_count_intron_only)))
+setDT(intron_only_df, keep.rownames = "sample")
+exon_intron_df <- data.frame("gene_counts" = gene_count_exons_introns_only, 
+                           "location" = rep("exons + introns", length(gene_count_exons_introns_only)))
+setDT(exon_intron_df, keep.rownames = "sample")
+
+# combined df so that stacked barplots can be generated
+gene_count_stack_df <- do.call("rbind", list(exon_only_df, intron_only_df, exon_intron_df))
+gene_count_stack_df$sample <- gsub("[^0-9]", "", gene_count_stack_df$sample)
+
+gene_count_stack_df$group <- "temp"
+
+# plotting raw gene count
+ggplot(gene_count_stack_df, aes(fill=location, y=gene_counts, x=sample)) + 
+  geom_bar(position="stack", stat="identity") +
+  xlab("Sample") + ylab("Gene Count") + ggtitle("Gene Counts") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) + 
+  guides(fill=guide_legend(title="Read location"))
+
+gene_count_per_sample <- exon_only_df$gene_counts + intron_only_df$gene_counts + exon_intron_df$gene_counts
+
+# mean of genes per sample
+mean(gene_count_per_sample)
+
+# variance of genes per sample
+var(gene_count_per_sample)
+
+# standard deviation of genes per sample
+sd(gene_count_per_sample)
+
+# plotting proportion of genes by location
+ggplot(gene_count_stack_df, aes(fill=location, y=gene_counts, x=sample)) + 
+  geom_bar(position="fill", stat="identity") +
+  xlab("Sample") + ylab("Gene Count") + ggtitle("Proportion Gene Counts by Location") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) + 
+  guides(fill=guide_legend(title="Read location"))
+
+intron_count_per_sample <- intron_only_df$gene_counts / (exon_only_df$gene_counts + intron_only_df$gene_counts + exon_intron_df$gene_counts)
+
+# mean of proportion of genes in intronic reads
+mean(intron_count_per_sample)
+
+# variance of proportion of genes in intronic reads
+var(intron_count_per_sample)
+
+# standard deviation of proportion of genes in intronic reads
+sd(intron_count_per_sample)
+```
+</div>
+
+# Acknowledgements
+* Dr. Shreejoy Tripathy, Supervisor
+* Sonny Chen, Post-Doc
+* Kristina Zuza, PhD student (Univ. of Heidelberg)
+* Allen Institute for Brain Science
+
+# References
+
+1. Dobin, A., Davis, C. A., Schlesinger, F., Drenkow, J., Zaleski, C., Jha, S., Batut, P., Chaisson, M., & Gingeras, T. R. (2013). STAR: ultrafast universal RNA-seq aligner. Bioinformatics (Oxford, England), 29(1), 15–21. https://doi.org/10.1093/bioinformatics/bts635
+
