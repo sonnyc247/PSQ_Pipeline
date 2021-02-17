@@ -21,7 +21,7 @@ STAR article - https://pubmed.ncbi.nlm.nih.gov/23104886/
 * These are stored essentially in text files, one for each sample. 
 * The most common format is .fastq, but could be in another format, such as .txt. We have been able to run STAR with .txt files previously without any change to code/command.
 * These files are often compressed, with common compression extensions being ".gz" and ".tar". Compressed files can be read with STAR directly by parameter specification in the command (see below). 
-* RNAseq experiments can be single or double stranded. Double stranded files may end with "_1" and "_2" after a specimen name and before extensions. Inputting a pair of fastq files into star can also be specified in STAR parameters (see below).
+* RNAseq experiments can be single or double stranded. Double stranded files may end with "_1" and "_2" after a specimen name and before extensions. A single STAR command with two read/fastq files as input is how you specify to the program that you have paired reads.
 
 Example filenames of RNAseq reads:
 
@@ -71,21 +71,57 @@ In addition to the basic parameters above, we have also used previously:
 * "--runThreadN" to specify number of threads
 * "--sjdbGTFtagExonParentTranscript Parent" for accomodating an NCBI/refseq genome
 
+Note: if you ever need to track down what your exact command was for generating the genome reference for star, you can find it in "genomeParameters.txt" in the genomeDir
+
 #### Basic alignment
 
 After setting up the genome, we can align RNAseq read files to it
 
 ```bash {cmd}
-# For single-stranded files
+# For general/basic STAR alignment
 
 STAR --genomeDir "/path_to_where_you_stored_processed_genome/" \ #same genomeDir as above [1]
-     --readFilesIn "/path_to_RNAseq_reads_file_likely_a_fastq/" \ #the RNAseq reads
-     --outSAMtype BAM SortedByCoordinate \ #we want sorted BAM files as output 
+     --sjdbGTFfile "/path_to_reference_file_likely_a_gtf/" \ #reference gtf file again, most important if you want STAR to quantify gene reads
+     --readFilesIn "/path_to_ONE_RNAseq_reads_file_likely_a_fastq/" #the RNAseq reads (use only one file per command if your files are single-stranded, only an appropriate pair of files if your data come as paired reads)
+
+# For example:
+
+STAR --genomeDir "~/Genomic_references/Ensembl/Human/Release_103/USE_THIS_genomeDir/" \ 
+     --sjdbGTFfile "~/Genomic_references/Ensembl/Human/Release_103/Raw/Homo_sapiens.GRCh38.103.gtf" \ #reference gtf file, was also used to generate "/USE_THIS_genomeDir/"
+     --readFilesIn "~/Data/Samplename2_1.fastq.gz" "~/Data/Samplename2_2.fastq.gz" #NOT two samples, this is a pair of fastq files for ONE sample
+
 ```
 
 In addition to the basic parameters above, we have also used previously:
-* "--runThreadN" to specify number of threads
+
+Important
+=========
+* "--readFilesCommand zcat" to read in compressed files like .gz
+* "--quantMode ["TranscriptomeSAM" and (separated by one space)/or "GeneCounts"] for a transcript-coordinate bam used in RSEM quantification and/or STAR to output its own gene counts, respectively
+* "--outSAMtype ["BAM SortedByCoordinate" or "None"]" for sorted genomic-coordinates of reads as a bam file or to not output a sam or bam (but still output a TranscrptomeSAM specified above, for example), respectively
 * "--outFilterMultimapNmax 1" to only output uniquely mapped reads
+* "--runRNGseed [number]" to fix RNG for primary assignment of multimapped reads, which involves RNG (may be important for reproducibility)
+
+Other/convenience
+=================
+
+* "--runThreadN [number]" to specify number of threads
+* "--outFileNamePrefix ["/path_of_desired_output/output_prefix"]" to specify output dir AND add a prefix to the output files if desired
+* "--outReadsUnmapped Fastx" to output unmapped reads into another file (that can be processed/analyzed further)
+
+Putting the above together, we can use the following basic command to run a STAR alignment destined for RSEM quantification afterwards:
+
+```bash {cmd}
+# For STAR alignment into RSEM
+
+STAR --genomeDir "/path_to_where_you_stored_processed_genome/" \ #same genomeDir as above [1]
+     --sjdbGTFfile "/path_to_reference_file_likely_a_gtf/" \ #reference gtf file again, most important if you want STAR to quantify gene reads
+     --readFilesIn "/path_to_ONE_RNAseq_reads_file_likely_a_fastq/" \ #the RNAseq reads (one sample; use only one file or pair of files for paired-reads)
+     --quantMode TranscriptomeSAM \ #generate a transcript-coordinate bam for RSEM
+     --outSAMtype None # we only need the BAM above; to save space/unless otherwise desired, we can choose not to output a genome-coordinate sam or bam
+     
+```
+
 
 ## Acknowledgements
 
