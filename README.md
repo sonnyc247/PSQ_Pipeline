@@ -2,19 +2,21 @@
 
 This document serves as documentation and pseudo-tutorial for RNAseq (including bulk, sc/snRNAseq, and patch-seq) data processing and quality control methods in the Tripathy lab at the Krembil Centre for Neuroinformatics in the Centre for Addiction and Mental Health (CAMH). Some of the contents in this document is specific to the CAMH high-performance computing cluster (SCC), though most of the information should be generally applicable.
 
-## Alignment
+## <ins> Alignment </ins>
 
-### Overview
+### *Overview*
 
-This is the process of aligning raw/unmapped RNA fragments ("reads") to a reference genome. We use STAR for this.
+This is the process of aligning raw/unmapped RNA sequence fragments ("reads") to a reference genome. We use STAR for this.
 
-### References
+### *References*
 
 STAR repo - https://github.com/alexdobin/STAR
+
 STAR manual - https://github.com/alexdobin/STAR/blob/master/doc/STARmanual.pdf
+
 STAR article - https://pubmed.ncbi.nlm.nih.gov/23104886/
 
-### Input
+### *Input*
 
 #### RNAseq reads (necessary)
 
@@ -46,17 +48,19 @@ Samplename2_1.fastq.gz and Samplename2_2.fastq.gz for a sample2
 
 Most important for using publicly available datasets. Helps you understand what the RNAseq reads refer to/which samples the reads come from, and also helps identify whether the reads come from a single-stranded or double-stranded RNAseq experiment.
 
-### Running STAR
+### *Running STAR*
 
 #### First time
 
-If working with STAR the first time on a given computer, follow installation directions in https://github.com/alexdobin/STAR .
+If working with STAR for the first time on a given computer, follow installation directions in https://github.com/alexdobin/STAR .
 
-If working with CAMH SCC, STAR is already installed and can simply be loaded in linux terminal (such as via MobaXterm):
+If working on the CAMH SCC, STAR is already installed and can simply be loaded in linux terminal (such as via MobaXterm):
 
 ```bash {cmd}
 module load STAR
 ```
+
+Especially when working on the SCC, remember to note down the version of STAR you use for future reproducibility and reporting.
 
 For the first time aligning reads to any given genome, we need to set up the genome for STAR to use.
 
@@ -68,6 +72,7 @@ STAR --runMode genomeGenerate \ #tells STAR that we are running a command for se
 ```
 
 In addition to the basic parameters above, we have also used previously:
+
 * "--runThreadN" to specify number of threads
 * "--sjdbGTFtagExonParentTranscript Parent" for accomodating an NCBI/refseq genome
 
@@ -92,20 +97,21 @@ STAR --genomeDir "~/Genomic_references/Ensembl/Human/Release_103/USE_THIS_genome
 
 ```
 
+#### Other STAR options of interest
+
 In addition to the basic parameters above, we have also used previously:
 
-Important
-=========
+<ins> Important </ins>
+
 * "--readFilesCommand zcat" to read in compressed files like .gz
 * "--quantMode ["TranscriptomeSAM" and (separated by one space)/or "GeneCounts"] for a transcript-coordinate bam used in RSEM quantification and/or STAR to output its own gene counts, respectively
-* "--outSAMtype ["BAM SortedByCoordinate" or "None"]" for sorted genomic-coordinates of reads as a bam file or to not output a sam or bam (but still output a TranscrptomeSAM specified above, for example), respectively
+* "--outSAMtype ["BAM SortedByCoordinate" or "None"]" for sorted genomic-coordinates of reads as a bam file (used in GenomicAlignments script) or to not output a sam or bam (but still output a TranscrptomeSAM specified above, for example), respectively
 * "--outFilterMultimapNmax 1" to only output uniquely mapped reads
-* "--runRNGseed [number]" to fix RNG for primary assignment of multimapped reads, which involves RNG (may be important for reproducibility)
+* "--runRNGseed [integer]" to fix RNG for primary assignment of multimapped reads, which involves RNG (may be important for reproducibility)
 
-Other/convenience
-=================
+<ins> Other/convenience </ins>
 
-* "--runThreadN [number]" to specify number of threads
+* "--runThreadN [integer]" to specify number of threads
 * "--outFileNamePrefix ["/path_of_desired_output/output_prefix"]" to specify output dir AND add a prefix to the output files if desired
 * "--outReadsUnmapped Fastx" to output unmapped reads into another file (that can be processed/analyzed further)
 
@@ -121,11 +127,105 @@ STAR --genomeDir "/path_to_where_you_stored_processed_genome/" \ #same genomeDir
      --outSAMtype None # we only need the BAM above; to save space/unless otherwise desired, we can choose not to output a genome-coordinate sam or bam
      
 ```
+## <ins> Gene quantification </ins>
 
+### *Overview*
 
-## Acknowledgements
+In this step, we quantify the number of reads for each gene in each sample, now that the reads have been aligned to the genome and/or transcriptome. There are many ways to do this, such as quantification from STAR directly, as mentioned above. Our lab usually employs one of two methods for gene read quantification: RSEM or a GenomicAlignments (R package)-based script from the Allen Institute for Brain Science (AIBS). Note that RSEM has the capability of incorporating STAR alignment in its runs, but this is NOT what we do - we use RSEM after STAR.
 
-Special thanks to Justin Chee (https://github.com/cheejus2) and Jordan Sicherman (https://github.com/jsicherman) for help/consultation in developing this pipeline.
+### *References - RSEM*
+
+RSEM repo and basic manual - https://github.com/deweylab/RSEM
+
+RSEM details for alignment options - https://deweylab.github.io/RSEM/rsem-calculate-expression.html
+
+RSEM article - https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-12-323
+
+### *Input*
+
+#### Aligned RNAseq reads (necessary)
+
+* These are the bams output from STAR with the option "--quantMode TranscriptomeSAM"
+* Directly output from STAR, these files end with "Aligned.toTranscriptome.out.bam" (may have a prefix depending on the use of "--outFileNamePrefix")
+
+#### Reference genome (necessary)
+
+* Same kind of reference genome as used for STAR - a .fa file, for example
+* For a given sample, please use the exact same genome reference for STAR and RSEM; otherwise, things might break
+
+#### Reference genome annotation (necessary)
+
+* Same kind of reference genome annotation as used for STAR - a .gtf file, for example
+* For a given sample, please use the exact same genome annotation reference for STAR and RSEM; otherwise, things might break
+
+### *Running RSEM*
+
+#### First time
+
+If working with RSEM for the first time on a given computer, follow installation directions in https://github.com/deweylab/RSEM.
+
+If working with on the CAMH SCC, RSEM is already installed and can simply be loaded in linux terminal (such as via MobaXterm):
+
+```bash {cmd}
+module load RSEM
+```
+
+Especially when working on the SCC, remember to note down the version of STAR you use for future reproducibility and reporting.
+
+For the first time counting reads that were aligned to any given genome, we need to set up the genome for RSEM to use. The basic command for this is:
+
+```bash {cmd}
+rsem-prepare-reference --gtf "/path_to_reference_file_gtf_only/" \ #the genome annotation file  
+                       "/path_to_genome_file_likely_a_fasta/" \ #the genome file
+                       "/path_to_where_you_want_to_store_processed_RSEM_genome/" #this folder will be referenced when quantifying reads later [2]                       
+```
+
+In addition to the basic parameters above, we have also used previously:
+
+* "--gff3 "/path_to_reference_file_gff_only/"" replaces the gtf line when trying to work with a gff3 (e.g: .gff extension) file
+
+#### Basic quantification
+
+After setting up the genome, we can now quantify the gene counts
+
+```bash {cmd}
+# For general/basic RSEM quantification of SINGLE-reads
+
+rsem-calculate-expression --bam \ #tells RSEM we are inputting a bam file (as of Feb 17, 2021, this option is noted as being deprecated)
+                          "/path_to_transcriptome_bam_from_STAR/" \
+                          "/path_to_where_you_stored_processed_RSEM_genome/" \ #same processed RSEM genome folder as above [2]
+                          "/path_to_where_you_want_to_store_RSEM_output/"
+                          
+```
+
+#### Other RSEM options of interest
+
+In addition to the basic parameters above, we have also used previously:
+
+* "--paired-end" to specify that your bam/reads were paired reads
+* "--no-bam-output" to not output any bam from the RSEM run; useful to help maintain storage space
+* "-p [integer]" to specify number of threads
+* --forward-prob 0.5 \ #tells RSEM the RNAseq protocol was not strand-specific (as of Feb 17, 2021, this option is noted as being deprecated)
+
+### *Combine RSEM output into count matrix*
+
+A count matrix is the basic format of RNAseq data for further analyses. As its name implies, it is a matrix of the number (count) of reads captured per gene per sample. In a count matrix, the rows are genes and the columns are samples. 
+
+https://github.com/sonnyc247/PSQ_Pipeline/blob/master/Code/combine_csv.R is our current R script that we run with a terminal command to compile a count matrix from individual output csv files <ins> from the AIBS GenomicAlignments script </ins> (instructions to use this script with appropriate STAR modifications to come).
+
+```bash {cmd}
+# For combinging CSVs from AIBS script:
+
+module load R #for CAMH SCC
+
+Rscript ~/combine_csv.R "/path_to_directory_containing_multiple_csv/"
+```
+
+We are working on a similar script, adjusted from combine_csv.R, for combining output files from RSEM.
+
+## <ins> Acknowledgements </ins>
+
+Special thanks to Justin Chee (https://github.com/cheejus2) and Jordan Sicherman (https://github.com/jsicherman) for help and consultation in developing this pipeline.
 
 This work was supported in part by funding provided by Brain Canada, in partnership with Health Canada, for the Canadian Open Neuroscience Platform initiative.
 
