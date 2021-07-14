@@ -8,15 +8,15 @@ library(rtracklayer)
 # GTFs
 # reference <- import.gff("Mus_musculus.GRCm38.93.gff3")
 
-reference <- import.gff("/external/rprshnas01/kcni/ychen/References/Mus_musculus.GRCm38.98.gtf")
+reference <- import.gff("/external/rprshnas01/netdata_kcni/stlab/Genomic_references/Ensembl/Mouse/Release_104/Raw/Mus_musculus.GRCm39.104.gtf")
 keeplevels=levels(seqnames(reference))[1:22]
 
 
 reference=keepSeqlevels(reference, keeplevels, pruning.mode="coarse")
 
-mchr=read.table("mouse_chr.txt",as.is=T,check.names=F) ##skipped
-rownames(mchr)=mchr$V1 ##skipped
-seqlevels(reference)=mchr[seqlevels(reference),"V7"] ##skipped
+#mchr=read.table("mouse_chr.txt",as.is=T,check.names=F) ##skipped
+#rownames(mchr)=mchr$V1 ##skipped
+#seqlevels(reference)=mchr[seqlevels(reference),"V7"] ##skipped
 
 
 #get exons from gtf
@@ -98,6 +98,8 @@ ind=match(names(exon.list),reference.gene$gene_name)
 
 
 anno=data.frame(gene_name=names(exon.list),gene_id=names(gene.name)[idx],typeofgene=reference.gene$gene_biotype[ind],type_from_gtf=reference.gene$gene_biotype[ind],mt=FALSE,stringsAsFactors=F)
+#anno=data.frame(gene_name=names(exon.list),gene_id=names(gene.name)[idx],mt=FALSE,stringsAsFactors=F) # for gtf from refseq gff
+
 gene_id=anno$gene_id
 
 

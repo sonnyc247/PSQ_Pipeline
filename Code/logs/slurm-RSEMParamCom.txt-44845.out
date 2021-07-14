@@ -1,0 +1,102 @@
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus2_1.sh	rsem-parse-alignments /external/rprshnas01/netdata_kcni/stlab/Genomic_references/Ensembl/Mouse/Release_104/USE_THIS_RSEMDir/ /external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_results/Mmusculus2_1/Mmusculus2_1.temp/Mmusculus2_1 /external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_results/Mmusculus2_1/Mmusculus2_1.stat/Mmusculus2_1 /external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/STAR_results/coord_bams/Mmusculus2_1Aligned.toTranscriptome.out.bam 3 -tag XM
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus2_1.sh	Done!
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus2_1.sh	
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus2_1.sh	rsem-build-read-index 32 1 0 /external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_results/Mmusculus2_1/Mmusculus2_1.temp/Mmusculus2_1_alignable_1.fq /external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_results/Mmusculus2_1/Mmusculus2_1.temp/Mmusculus2_1_alignable_2.fq
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus2_1.sh	Build Index /external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_results/Mmusculus2_1/Mmusculus2_1.temp/Mmusculus2_1_alignable_1.fq is Done!
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus2_1.sh	Build Index /external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_results/Mmusculus2_1/Mmusculus2_1.temp/Mmusculus2_1_alignable_2.fq is Done!
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus2_1.sh	
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus2_1.sh	rsem-run-em /external/rprshnas01/netdata_kcni/stlab/Genomic_references/Ensembl/Mouse/Release_104/USE_THIS_RSEMDir/ 3 /external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_results/Mmusculus2_1/Mmusculus2_1 /external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_results/Mmusculus2_1/Mmusculus2_1.temp/Mmusculus2_1 /external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_results/Mmusculus2_1/Mmusculus2_1.stat/Mmusculus2_1 -p 1
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus2_1.sh	Refs.loadRefs finished!
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus2_1.sh	Thread 0 : N = 43, NHit = 43
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus2_1.sh	EM_init finished!
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus2_1.sh	estimateFromReads, N1 finished.
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus2_1.sh	ROUND = 1, SUM = 43, bChange = 142433, totNum = 142434
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus2_1.sh	ROUND = 2, SUM = 43, bChange = 1, totNum = 1
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus2_1.sh	ROUND = 3, SUM = 43, bChange = 0, totNum = 0
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus2_1.sh	ROUND = 4, SUM = 43, bChange = 0, totNum = 0
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus2_1.sh	ROUND = 5, SUM = 43, bChange = 0, totNum = 0
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus2_1.sh	ROUND = 6, SUM = 43, bChange = 0, totNum = 0
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus2_1.sh	ROUND = 7, SUM = 43, bChange = 0, totNum = 0
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus2_1.sh	ROUND = 8, SUM = 43, bChange = 0, totNum = 0
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus2_1.sh	ROUND = 9, SUM = 43, bChange = 0, totNum = 0
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus2_1.sh	ROUND = 10, SUM = 43, bChange = 0, totNum = 0
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus2_1.sh	ROUND = 11, SUM = 43, bChange = 0, totNum = 0
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus2_1.sh	ROUND = 12, SUM = 43, bChange = 0, totNum = 0
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus2_1.sh	ROUND = 13, SUM = 43, bChange = 0, totNum = 0
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus2_1.sh	ROUND = 14, SUM = 43, bChange = 0, totNum = 0
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus2_1.sh	ROUND = 15, SUM = 43, bChange = 0, totNum = 0
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus2_1.sh	ROUND = 16, SUM = 43, bChange = 0, totNum = 0
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus2_1.sh	ROUND = 17, SUM = 43, bChange = 0, totNum = 0
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus2_1.sh	ROUND = 18, SUM = 43, bChange = 0, totNum = 0
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus2_1.sh	ROUND = 19, SUM = 43, bChange = 0, totNum = 0
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus2_1.sh	ROUND = 20, SUM = 43, bChange = 0, totNum = 0
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus2_1.sh	Expression Results are written!
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus2_1.sh	Time Used for EM.cpp : 0 h 00 m 13 s
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus2_1.sh	
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus2_1.sh	rm -rf /external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_results/Mmusculus2_1/Mmusculus2_1.temp
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus2_1.sh	
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus2_1.sh	-------------------------------------------------------------------------------
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus2_1.sh	There are messages associated with the following module(s):
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus2_1.sh	-------------------------------------------------------------------------------
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus2_1.sh	
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus2_1.sh	RSEM/1.3.1:
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus2_1.sh	   This module is out-of-date. It may still work, but it will be
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus2_1.sh	   decommissioned in the near-future. We recommend trying the following
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus2_1.sh	   command to find the latest module versions under
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus2_1.sh	   bio/R,lang/R,math/R,tools/R,compiler/R etc; module spider R If you have
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus2_1.sh	   any questions or concerns regarding the above, please contact SCC support
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus2_1.sh	   at <SCC.Support@camh.ca>
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus2_1.sh	
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus2_1.sh	-------------------------------------------------------------------------------
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus2_1.sh	
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus1_1.sh	rsem-parse-alignments /external/rprshnas01/netdata_kcni/stlab/Genomic_references/Ensembl/Mouse/Release_104/USE_THIS_RSEMDir/ /external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_results/Mmusculus1_1/Mmusculus1_1.temp/Mmusculus1_1 /external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_results/Mmusculus1_1/Mmusculus1_1.stat/Mmusculus1_1 /external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/STAR_results/coord_bams/Mmusculus1_1Aligned.toTranscriptome.out.bam 3 -tag XM
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus1_1.sh	Done!
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus1_1.sh	
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus1_1.sh	rsem-build-read-index 32 1 0 /external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_results/Mmusculus1_1/Mmusculus1_1.temp/Mmusculus1_1_alignable_1.fq /external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_results/Mmusculus1_1/Mmusculus1_1.temp/Mmusculus1_1_alignable_2.fq
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus1_1.sh	Build Index /external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_results/Mmusculus1_1/Mmusculus1_1.temp/Mmusculus1_1_alignable_1.fq is Done!
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus1_1.sh	Build Index /external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_results/Mmusculus1_1/Mmusculus1_1.temp/Mmusculus1_1_alignable_2.fq is Done!
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus1_1.sh	
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus1_1.sh	rsem-run-em /external/rprshnas01/netdata_kcni/stlab/Genomic_references/Ensembl/Mouse/Release_104/USE_THIS_RSEMDir/ 3 /external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_results/Mmusculus1_1/Mmusculus1_1 /external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_results/Mmusculus1_1/Mmusculus1_1.temp/Mmusculus1_1 /external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_results/Mmusculus1_1/Mmusculus1_1.stat/Mmusculus1_1 -p 1
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus1_1.sh	Refs.loadRefs finished!
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus1_1.sh	Thread 0 : N = 43, NHit = 43
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus1_1.sh	EM_init finished!
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus1_1.sh	estimateFromReads, N1 finished.
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus1_1.sh	ROUND = 1, SUM = 43, bChange = 142433, totNum = 142434
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus1_1.sh	ROUND = 2, SUM = 43, bChange = 1, totNum = 1
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus1_1.sh	ROUND = 3, SUM = 43, bChange = 0, totNum = 0
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus1_1.sh	ROUND = 4, SUM = 43, bChange = 0, totNum = 0
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus1_1.sh	ROUND = 5, SUM = 43, bChange = 0, totNum = 0
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus1_1.sh	ROUND = 6, SUM = 43, bChange = 0, totNum = 0
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus1_1.sh	ROUND = 7, SUM = 43, bChange = 0, totNum = 0
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus1_1.sh	ROUND = 8, SUM = 43, bChange = 0, totNum = 0
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus1_1.sh	ROUND = 9, SUM = 43, bChange = 0, totNum = 0
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus1_1.sh	ROUND = 10, SUM = 43, bChange = 0, totNum = 0
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus1_1.sh	ROUND = 11, SUM = 43, bChange = 0, totNum = 0
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus1_1.sh	ROUND = 12, SUM = 43, bChange = 0, totNum = 0
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus1_1.sh	ROUND = 13, SUM = 43, bChange = 0, totNum = 0
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus1_1.sh	ROUND = 14, SUM = 43, bChange = 0, totNum = 0
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus1_1.sh	ROUND = 15, SUM = 43, bChange = 0, totNum = 0
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus1_1.sh	ROUND = 16, SUM = 43, bChange = 0, totNum = 0
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus1_1.sh	ROUND = 17, SUM = 43, bChange = 0, totNum = 0
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus1_1.sh	ROUND = 18, SUM = 43, bChange = 0, totNum = 0
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus1_1.sh	ROUND = 19, SUM = 43, bChange = 0, totNum = 0
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus1_1.sh	ROUND = 20, SUM = 43, bChange = 0, totNum = 0
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus1_1.sh	Expression Results are written!
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus1_1.sh	Time Used for EM.cpp : 0 h 00 m 11 s
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus1_1.sh	
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus1_1.sh	rm -rf /external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_results/Mmusculus1_1/Mmusculus1_1.temp
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus1_1.sh	
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus1_1.sh	-------------------------------------------------------------------------------
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus1_1.sh	There are messages associated with the following module(s):
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus1_1.sh	-------------------------------------------------------------------------------
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus1_1.sh	
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus1_1.sh	RSEM/1.3.1:
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus1_1.sh	   This module is out-of-date. It may still work, but it will be
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus1_1.sh	   decommissioned in the near-future. We recommend trying the following
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus1_1.sh	   command to find the latest module versions under
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus1_1.sh	   bio/R,lang/R,math/R,tools/R,compiler/R etc; module spider R If you have
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus1_1.sh	   any questions or concerns regarding the above, please contact SCC support
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus1_1.sh	   at <SCC.Support@camh.ca>
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus1_1.sh	
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus1_1.sh	-------------------------------------------------------------------------------
+/external/rprshnas01/netdata_kcni/stlab/File_transfer/Mini_Test_Data/test_output/RSEM_scripts/RSEMParamScript_Mmusculus1_1.sh	
