@@ -79,10 +79,10 @@ After setting up the reference, we can align RNAseq read files to it and get our
 ```bash {cmd}
 
 kallisto quant \ #running Kallisto for pseudo-alignment and quantification
-         -i "/path_to_stored_processed_reference/some_reference_name.idx" #same index path/file as above [1]
-         -o "/path_to_where_you_want_to_store_Kallisto_output/" #where we want to store the output of Kallisto
-         -b 100 #number of times/samples to bootstrap, 100 is the example used in the "getting started" page of the Kallisto website
-         "~/Data/Samplename2_1.fastq.gz" #first of a pair of fastq files for a sample
+         -i "/path_to_stored_processed_reference/some_reference_name.idx" \ #same index path/file as above [1]
+         -o "/path_to_where_you_want_to_store_Kallisto_output/" \ #where we want to store the output of Kallisto
+         -b 100 \ #number of times/samples to bootstrap, 100 is the example used in the "getting started" page of the Kallisto website
+         "~/Data/Samplename2_1.fastq.gz" \ #first of a pair of fastq files for a sample
          "~/Data/Samplename2_2.fastq.gz" #second of a pair of fastq files for a sample
 
 ```
