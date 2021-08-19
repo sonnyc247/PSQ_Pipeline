@@ -70,7 +70,7 @@ kallisto index \ #running Kallisto for index processing
   
 ```
 
-Note: if you ever need to track down what your exact command was for generating the genome reference for star, you can find it in "genomeParameters.txt" in the genomeDir
+Note: note/write down what the exact command was for processing the mRNA reference for later use; there is no specific output of this command that helps track it down later
 
 ### *Basic run for one sample*
 
