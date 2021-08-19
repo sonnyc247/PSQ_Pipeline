@@ -30,6 +30,7 @@ Kallisto information for starting (main reference for the code in our current in
 Example filenames of RNAseq reads:
 
 Samplename1.txt for a sample1
+
 Samplename2_1.fastq.gz and Samplename2_2.fastq.gz for a sample2
 
 ### *Reference transcriptome (necessary)*
@@ -98,9 +99,8 @@ In addition to the basic parameters above, we can also try:
 
 Outputs of the Kallisto run are saved in the "/path_to_where_you_want_to_store_Kallisto_output/" specified with the run command. Two files in particular are useful to note:
 
-"abundance.tsv" contains the result proper, it gives an estimate for every isoform in the reference used for pseudo-alignment/quantification for the sample being processed
-
-"run_info.json" contains details of the specific run, including the bash command used, which you can refer back later to if needed
+* "abundance.tsv" contains the result proper, it gives an estimate for every isoform in the reference used for pseudo-alignment/quantification for the sample being processed
+* "run_info.json" contains details of the specific run, including the bash command used, which you can refer back later to if needed
 
 ### *Processing multiple files*
 
