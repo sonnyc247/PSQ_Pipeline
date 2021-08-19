@@ -46,7 +46,7 @@ Most important for using publicly available datasets. Helps you understand what 
 
 ## <ins> Running Kallisto </ins>
 
-### *First time - setting up the reference*
+### *First time - setting up the transcriptome reference*
 
 If working with Kallisto for the first time on a given computer, follow installation directions in https://pachterlab.github.io/kallisto/download .
 
@@ -64,8 +64,8 @@ For the first time aligning and quantifying reads with Kallisto, we need to set 
 
 ```bash {cmd}
 
-kallisto index \ #running Kallisto for index processing
-         -i "/path_to_where_you_want_to_store_processed_reference/some_reference_name.idx" \ #where we want to store the processed reference as an "idx" file [1]
+kallisto index \ #running Kallisto for transcriptome reference index processing
+         -i "/path_to_where_you_want_to_store_processed_reference/some_reference_name.idx" \ #where we want to store the processed transcriptome as an "idx" file [1]
          "/path_to_reference_file_like_a_fasta/" \ #the mRNA reference file
   
 ```
@@ -74,7 +74,7 @@ Note: note/write down what the exact command was for processing the mRNA referen
 
 ### *Basic run for one sample*
 
-After setting up the reference, we can align RNAseq read files to it and get our quantified isoform reads
+After setting up the transcriptome reference, we can align RNAseq read files to it and get our quantified isoform reads
 
 ```bash {cmd}
 
