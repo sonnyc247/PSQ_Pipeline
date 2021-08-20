@@ -185,27 +185,22 @@ This will generate gene counts from BAM files in a folder, which can then be com
 
 ### *Overview*
 
-In this step, we generate sashimiplots/read pile-ups for samples aligned to the (annotated) genome. 
+We can generate sashimiplots/read pile-ups for samples aligned to the (annotated) genome. Our current work for this is in the testing/verification phase (as of August 20, 2021). Some example code of our previous work for this step can be found in https://github.com/sonnyc247/PSQ_Pipeline/blob/master/Code/Alignment/STAR-SumOverlaps-Sashimi/coverage_plot1.2.R. Some of the key packages we use for this are GenomicFeatures, GenomicAlighments, and Gviz. 
 
 ### *References*
 
-These scripts are based on X R packages:
-
 * GenomicFeatures - https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1003118 ; https://bioconductor.org/packages/release/bioc/html/GenomicFeatures.html
-* Rsamtools - https://bioconductor.org/packages/release/bioc/html/Rsamtools.html
 * GenomicAlignments - https://bioconductor.org/packages/release/bioc/html/GenomicAlignments.html
-* edgeR - https://academic.oup.com/bioinformatics/article/26/1/139/182458 ; https://bioconductor.org/packages/release/bioc/html/edgeR.html
-* rtracklayer - https://academic.oup.com/bioinformatics/article/25/14/1841/225816?login=true ; https://bioconductor.org/packages/release/bioc/html/rtracklayer.html
+* Gviz - https://link.springer.com/protocol/10.1007%2F978-1-4939-3578-9_16 ; https://bioconductor.org/packages/release/bioc/html/Gviz.html
 
 ### *Input*
 
 #### Aligned RNAseq reads (necessary)
 
-These are the coordinate-sorted BAM files generated above
+These are the coordinate-sorted BAM files generated previously.
 
 #### Reference genome annotation (necessary)
 
 * Same kind of reference genome annotation as used for STAR - a .gtf file, for example
 * For a given sample, please use the exact same genome annotation reference for STAR alignment and gene quantification
 
-### *Running quantification scripts*
