@@ -1,6 +1,6 @@
-# Tripathy lab RNAseq alignment and QC pipeline
+# RNAseq alignment with STAR followed by quantification with RSEM
 
-This document serves as documentation and pseudo-tutorial for RNAseq (including bulk, sc/snRNAseq, and patch-seq) data processing and quality control methods in the Tripathy lab at the Krembil Centre for Neuroinformatics in the Centre for Addiction and Mental Health (CAMH). Some of the contents in this document is specific to the CAMH high-performance computing cluster (SCC), though most of the information should be generally applicable.
+This document serves as documentation and pseudo-tutorial for RNAseq (including bulk, sc/snRNAseq, and patch-seq) data processing in the Tripathy lab at the Krembil Centre for Neuroinformatics in the Centre for Addiction and Mental Health (CAMH). Some of the contents in this document is specific to the CAMH high-performance computing cluster (SCC), though most of the information should be generally applicable.
 
 ## <ins> Alignment </ins>
 
@@ -28,6 +28,7 @@ STAR article - https://pubmed.ncbi.nlm.nih.gov/23104886/
 Example filenames of RNAseq reads:
 
 Samplename1.txt for a sample1
+
 Samplename2_1.fastq.gz and Samplename2_2.fastq.gz for a sample2
 
 #### Reference genome (necessary)
@@ -57,7 +58,9 @@ If working with STAR for the first time on a given computer, follow installation
 If working on the CAMH SCC, STAR is already installed and can simply be loaded in linux terminal (such as via MobaXterm):
 
 ```bash {cmd}
+
 module load STAR
+
 ```
 
 Especially when working on the SCC, remember to note down the version of STAR you use for future reproducibility and reporting.
@@ -65,10 +68,12 @@ Especially when working on the SCC, remember to note down the version of STAR yo
 For the first time aligning reads to any given genome, we need to set up the genome for STAR to use.
 
 ```bash {cmd}
+
 STAR --runMode genomeGenerate \ #tells STAR that we are running a command for setting up the genome for later use
      --genomeDir "/path_to_where_you_want_to_store_processed_genome/" \ #this folder will be referenced when aligning reads later [1]
      --genomeFastaFiles "/path_to_genome_file_likely_a_fasta/" \ #the genome file
      --sjdbGTFfile "/path_to_reference_file_likely_a_gtf/" \ #the genome annotation file    
+     
 ```
 
 In addition to the basic parameters above, we have also used previously:
@@ -83,6 +88,7 @@ Note: if you ever need to track down what your exact command was for generating 
 After setting up the genome, we can align RNAseq read files to it
 
 ```bash {cmd}
+
 # For general/basic STAR alignment
 
 STAR --genomeDir "/path_to_where_you_stored_processed_genome/" \ #same genomeDir as above [1]
@@ -118,6 +124,7 @@ In addition to the basic parameters above, we have also used previously:
 Putting the above together, we can use the following basic command to run a STAR alignment destined for RSEM quantification afterwards:
 
 ```bash {cmd}
+
 # For STAR alignment into RSEM
 
 STAR --genomeDir "/path_to_where_you_stored_processed_genome/" \ #same genomeDir as above [1]
@@ -127,6 +134,27 @@ STAR --genomeDir "/path_to_where_you_stored_processed_genome/" \ #same genomeDir
      --outSAMtype None # we only need the BAM above; to save space/unless otherwise desired, we can choose not to output a genome-coordinate sam or bam
      
 ```
+
+### Processing multiple samples in batch
+
+We can use a bash script on the SCC to parallelize STAR runs, such as https://github.com/sonnyc247/PSQ_Pipeline/blob/master/Code/Alignment/STAR-RSEM/STAR_pipe_for_RSEM.sh
+
+```bash {cmd}
+
+~/STAR_pipe_for_RSEM.sh "/path_to_folder_of_fastq_files_to_process" \ #your raw RNAseq data
+                        "/path_to_where_you_want_to_store_all_STAR_output/" \ #generates directories individual-sample STAR command scripts to be run and their results
+                        "true or false" \ #true tells the script that RNAseq data are paired-end reads; false for single-end reads
+                        "/path_to_where_you_stored_processed_genome/" \ #same genomeDir as above [1]
+                        "/path_to_reference_file_likely_a_gtf/" #reference gtf file, same as what is used to generate [1]                        
+                          
+```
+
+Using this script with "true" for the third option - for paired-end reads, assumes that, when sorted alphanumerically, paired-end files are right next to each other, such that file 1 and 2 are from 1 sample, 3 and 4 from the next, etc.
+
+After running this script, it generates a STARParaCom.txt file that you can submit to the SCC via qbatch to process samples in parallel. An example qbatch command is shown at the bottom (hash'ed out) of https://github.com/sonnyc247/PSQ_Pipeline/blob/master/Code/Alignment/STAR-RSEM/STAR_pipe_for_RSEM.sh.
+
+This script also moves STAR output files into folders of BAMs (for next steps) and logs (which can be looked at for QC metrics).
+
 ## <ins> Gene quantification </ins>
 
 ### *Overview*
@@ -175,9 +203,11 @@ Especially when working on the SCC, remember to note down the version of STAR yo
 For the first time counting reads that were aligned to any given genome, we need to set up the genome for RSEM to use. The basic command for this is:
 
 ```bash {cmd}
+
 rsem-prepare-reference --gtf "/path_to_reference_file_gtf_only/" \ #the genome annotation file  
                        "/path_to_genome_file_likely_a_fasta/" \ #the genome file
-                       "/path_to_where_you_want_to_store_processed_RSEM_genome/" #this folder will be referenced when quantifying reads later [2]                       
+                       "/path_to_where_you_want_to_store_processed_RSEM_genome/" #this folder will be referenced when quantifying reads later [2] 
+                       
 ```
 
 In addition to the basic parameters above, we have also used previously:
@@ -189,6 +219,7 @@ In addition to the basic parameters above, we have also used previously:
 After setting up the genome, we can now quantify the gene counts
 
 ```bash {cmd}
+
 # For general/basic RSEM quantification of SINGLE-reads
 
 rsem-calculate-expression --bam \ #tells RSEM we are inputting a bam file (as of Feb 17, 2021, this option is noted as being deprecated)
@@ -207,25 +238,23 @@ In addition to the basic parameters above, we have also used previously:
 * "-p [integer]" to specify number of threads
 * --forward-prob 0.5 \ #tells RSEM the RNAseq protocol was not strand-specific (as of Feb 17, 2021, this option is noted as being deprecated)
 
+### Processing multiple samples in batch
+
+We can use a bash script on the SCC to parallelize RSEM runs, such as https://github.com/sonnyc247/PSQ_Pipeline/blob/master/Code/Alignment/STAR-RSEM/RSEM_pipe_post_STAR.sh, which we made for use after https://github.com/sonnyc247/PSQ_Pipeline/blob/master/Code/Alignment/STAR-RSEM/STAR_pipe_for_RSEM.sh .
+
+```bash {cmd}
+
+~/RSEM_pipe_post_STAR.sh "/path_to_where_you_want_to_store_all_RSEM_output/" \ #generates directories individual-sample RSEM command scripts to be run and their results
+                         "/path_to_folder_of_bam_files_to_process" \ #bam files from the previous STAR step
+                         "/path_to_where_you_stored_processed_RSEM_genome/" #same processed RSEM genome folder as above [2]                       
+                          
+```
+
+After running this script, it generates a RSEMParaCom.txt file that you can submit to the SCC via qbatch to process samples in parallel. An example qbatch command is shown at the bottom (hash'ed out) of https://github.com/sonnyc247/PSQ_Pipeline/blob/master/Code/Alignment/STAR-RSEM/RSEM_pipe_post_STAR.sh.
+
 ### *Combine RSEM output into count matrix*
 
 A count matrix is the basic format of RNAseq data for further analyses. As its name implies, it is a matrix of the number (count) of reads captured per gene per sample. In a count matrix, the rows are genes and the columns are samples. 
 
-https://github.com/sonnyc247/PSQ_Pipeline/blob/master/Code/combine_csv.R is our current R script that we run with a terminal command to compile a count matrix from individual output csv files <ins> from the AIBS GenomicAlignments script </ins> (instructions to use this script with appropriate STAR modifications to come).
-
-```bash {cmd}
-# For combinging CSVs from AIBS script:
-
-module load R #for CAMH SCC
-
-Rscript ~/combine_csv.R "/path_to_directory_containing_multiple_csv/"
-```
-
-We are working on a similar script, adjusted from combine_csv.R, for combining output files from RSEM.
-
-## <ins> Acknowledgements </ins>
-
-Special thanks to Justin Chee (https://github.com/cheejus2) and Jordan Sicherman (https://github.com/jsicherman) for help and consultation in developing this pipeline.
-
-This work was supported in part by funding provided by Brain Canada, in partnership with Health Canada, for the Canadian Open Neuroscience Platform initiative.
+https://github.com/sonnyc247/PSQ_Pipeline/blob/master/Code/Alignment/STAR-RSEM/combine_csv_RSEM.R is a sample R script that can be run to compile a count matrix from individual output csv files from RSEM stored in one folder - the output of our batch-RSEM-processing script.
 
